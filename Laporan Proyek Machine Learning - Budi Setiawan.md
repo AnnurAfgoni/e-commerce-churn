@@ -56,7 +56,7 @@ Eksploratory Data yang dilakukan pada notebook ini adalah untuk kepentingan mode
 ### Univariate Analysis
 
 Dataset memiliki tipe data numerik dan kategorikal. Untuk fitur bertipe numerik, akan dilakukan plot untuk mencari tau bentuk distribusinya dengan menggunakan histogram. Dataset memiliki 14 fitur numerik dengan bentuk distribusi seperti gambar dibawah.
-
+![histogram_of_numerical_features](https://github.com/AnnurAfgoni/e-commerce-churn/blob/master/images/histogram_of_numerical_features.png)
 Kesimpulan yang bisa diperoleh dari histogram diatas adalah:
 - Kebanyakan fitur numerik adalah data deskrit (countable).
 - Imbalance dataset, terlihat dari jumlah user yang churn jauh lebih sedikit dibanding dengan yang tidak churn.
