@@ -68,18 +68,24 @@ Kesimpulan yang bisa diperoleh dari histogram diatas adalah:
 
 Jumlah fitur kategori pada dataset ada 5 fitur. Proporsi value untuk setiap fitur kategori bisa dilihat dibawah
 
-Jumlah unique value pada fitur kategori tidak ada yang terlalu banyak. Semuanya masih pada tahap bisa diterima. Garis merah pada plot adalah threshold proporsi untuk _rare label_. _Rare Label_ adalah label yang sangat jarang muncul pada fitur kategori. Threshold yang digunakan adalah 0.05, apabila label itu proporsinya dibawah 0.05 maka akan dikategorikan sebagai _rare label_.
+Jumlah unique value pada fitur kategori tidak ada yang terlalu banyak. Semuanya masih pada tahap bisa diterima. Garis merah pada plot adalah threshold proporsi untuk _rare label_. _Rare Label_ adalah label yang sangat jarang muncul pada fitur kategori. Threshold yang digunakan adalah 0.05, apabila label itu proporsinya dibawah 0.05 maka akan dikategorikan sebagai _rare label_. Berdasarkan grafik tersebut, disimpulkan bahwa tidak ada fitur yang memiliki _Rare Label_.
 
-### Bivariate
+### Multivariate Analysis
 
+Untuk melihat pengaruh dari fitur numerik terhadap target, bisa dilihat pada visualisasi dibawah
 
+Gambar diatas adalah violinplot. Terlihat bahwa yang perbedaan yang cukup signifikan ada pada fitur `Tenure` dan `Complain`. User yang churn, cenderung waktu tenornya lebih sebentar dibandingkan dengan yang tidak. Pun sama dengan variable complain, proporsi complain yang churn lebih tinggi dibanding dengan yang tidak. ini menandakan bahwa kedua fitur ini adalah _good predictor_. Kesimpulan ini selaras dengan hasil korelasi fitur yang bisa dilihat pada gambar dibawah. 
+
+Terlihat bahwa ada beberapa fitur yang saling berkorelasi. Seperti fitur `OrderCount` dengan `CouponUsed`, `OrderCount` dengan `DaySinceLastOrder`. Hal ini perlu dicatat karena akan menjadi rujukan dalam penentuan model. Fitur yang saling berkorelasi akan menimbulkan masalah multikolinearitas pada model LogisticRegression.
 
 ## Data Preparation
 
 - **Check Duplicate data**
 Duplicate data adalah informasi berlebih yang tidak diperlukan. Jika ada, sebaiknya dihapus. Dataset ini tidak memiliki data duplikasi.
 - **Handling missing value**
-Fitur yang memiliki missing value semuanya adalah fitur numerik. Jumlah missing value untuk semua kolom tidak lebih dari 1% dari jumlah data. Melihat jarak antara nilai median dan mean tidak terlalu signifikan, maka akan dilakukan imputasi dengan nilai mean. Data missing value akan ditambahkan missing indicator untuk mengetahui apakah data yang missing merupakan good predictor atau tidak
+Fitur yang memiliki missing value semuanya adalah fitur numerik. Jumlah missing value untuk semua kolom tidak lebih dari 1% dari jumlah data. Melihat jarak antara nilai median dan mean tidak terlalu signifikan, maka akan dilakukan imputasi dengan nilai mean. Data missing value akan ditambahkan missing indicator untuk mengetahui apakah data yang missing merupakan good predictor atau tidak. Proporsi Missing value bisa dilihat pada tabel dibawah
+
+
 - **Handling Outlier**
 Hampir semua fitur numerik memiliki outlier. Outlier dideteksi dengan menggunakan metode IQR. Karena outlier kebanyakan bersumber dari distribusi data yang skew, maka data yang ada outlier akan dilakukan transformasi/normalisasi ketimbang dilakukan trimming (penghapusan).
 - **Handling cardinality dan Rare Labels**
@@ -87,15 +93,20 @@ Cardinality adalah data kategorik yang memiliki terlalu banyak unique value. Sed
 - **Variable Encoding**
 Data kategori dilakukan encoding dengan metode frequency encoder. Hal ini dilakukan karena cocok untuk kasus ini, semakin besar bobot semakin besar pengaruh label tersebut.
 - **Transformasi Variable**
-Transformasi variable bisa berarti scaling/normalisasi. Transformasi yang dicoba dalam notebook adalah `LogTransformation` dan `YeoJohnson`. Transformasi dilakukan hanya pada fitur numerik yang jumlah unique value diatas 10 karena kalau dibawah 10 bisa dianggap data kategori yang sudah di encoding. Untuk fitur numerik dengan unique value dibawah 10 dilakukan scaling dengan `MinMaxScaler`. __Perlu diingat bahwa transformasi ini hanya dilakukan untuk model yang sensitif dengan jarak seperti KNN dan Logistic Regression__
+Transformasi variable bisa berarti scaling/normalisasi. Transformasi yang dicoba dalam notebook adalah `LogTransformation` dan `YeoJohnson`. Transformasi dilakukan hanya pada fitur numerik yang jumlah unique value diatas 10 karena kalau dibawah 10 bisa dianggap data kategori yang sudah di encoding. Untuk fitur numerik dengan unique value dibawah 10 dilakukan scaling dengan `MinMaxScaler`. **Perlu diingat bahwa transformasi ini hanya dilakukan untuk model yang sensitif dengan jarak seperti _KNN_ dan _Logistic Regression_**
 
 ## Modelling
 
-Model yang diuji untuk dataset ini ada 5 model. Pertama ada model yang sensitif dengan jarak (KNN dan Logistic Regressien), kedua ada tree based model (Decision Tree, Random Forest, dan XGBoost Classifier). Pemilihan model dilakukan dengan melakukan training pada setiap model dengan parameter default, dan proses training dilakukan dengan metode cross validasi untuk melihat konsistensi hasil dari model. Model dengan nilai Recall paling tinggi akan dijadikan model utama untuk dilakukan Hyperparameter Tuning.
+Model yang diuji untuk dataset ini ada 5 model. Pertama ada model yang sensitif dengan jarak (_KNN_ dan _Logistic Regressien_), kedua ada tree based model (Decision Tree, Random Forest, dan XGBoost Classifier). Pemilihan model dilakukan dengan melakukan training pada setiap model dengan parameter default, hasil _recall_ untuk kedua model tersebut adalah sebagai berikut
 
-Perbedaan perlakuan pada data untuk model yang sensitif terhadap jarak dengan tree based model berada pada transformasi variable. Hal ini dikarenakan tree based model akan mengalami penurunan performa jika dilakukan scaling atau transformasi. 
+Model _Logistic Regression_ dan _KNN_ sensitif terhadap jarak atau skala karena model melakukan perhitungan dengan basis Koordinat Eucledian. Sehingga ketika skala datanya berbeda, model akan bisa dalam melakukan prediksi, dimana nilai dengan bobot yang lebih besar akan lebih mempengaruhi model. 
 
-Model yang dipilih adalah XGBoost karena memiliki nilai recall paling tinggi diantara model yang lain, yaitu sebesar 0,83. Setelah dilakukan Hyperparameter tuning didapat nilai recall sebesar 0,84 untuk data training dan 0.87 untuk data test.
+Perbedaan perlakuan pada data untuk model yang sensitif terhadap jarak dengan _tree based model_ berada pada transformasi variable. Hal ini dikarenakan _tree based model_ akan mengalami penurunan performa jika dilakukan scaling atau transformasi. 
+
+Untuk _tree based model_ hasilnya sebagai berikut.
+
+
+Proses training dilakukan dengan metode cross validasi untuk melihat konsistensi hasil dari model. Model dengan nilai Recall paling tinggi akan dijadikan model utama untuk dilakukan Hyperparameter Tuning. Model yang dipilih adalah XGBoost karena memiliki nilai recall paling tinggi diantara model yang lain, yaitu sebesar 0,83. Setelah dilakukan Hyperparameter tuning didapat nilai recall sebesar 0,84 untuk data training dan 0.87 untuk data test.
 
 ## Evaluation
 
