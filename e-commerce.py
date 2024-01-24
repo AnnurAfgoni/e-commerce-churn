@@ -407,3 +407,9 @@ sns.heatmap(confusion_matrix(y_test, y_test_pred), annot=True, fmt="d")
 plt.ylabel("y actual")
 plt.xlabel("y prediksi")
 plt.show()
+
+from xgboost import plot_importance
+
+feature_importance = best_xgb.feature_importances_
+plot_importance(best_xgb)
+plt.show()
