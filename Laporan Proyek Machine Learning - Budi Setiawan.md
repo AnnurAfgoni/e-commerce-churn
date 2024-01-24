@@ -133,4 +133,8 @@ Konsekuensi untuk error ini adalah mengklasifikasi pengguna yang sebenarnya tida
 
 Mengingat pemasukan terbesar dari E-Commerce adalah transaksi dari user, maka Type II Error lebih penting untuk dicegah. Sehingga metric yang digunakan adalah Recall. Recall merupakan metrics pada metode klasifikasi yang menyatakan seberapa besar persentase kejadian pada kelas positif yang berhasil dideteksi. Dalam kasus ini, penggunaan recall artinya memprediksi seakurat mungkin orang-orang yang berpotensi untuk churn dengan meminimalkan False Negatif. 
 
-Formula matematis untuk recall adalah: **$$\frac{TP}{TP+FN}$$**. Dari formula matematik tersebut, nilai dari recall sangat dipengaruhi oleh besar kecilnya nilai FN (False Negatif). Sehingga jika kita menginginkan nilai Recall yang besar, maka nilai FN haruslah kecil.
+Formula matematis untuk recall adalah: **$$\frac{TP}{TP+FN}$$**Dari formula matematik tersebut, nilai dari recall sangat dipengaruhi oleh besar kecilnya nilai FN (False Negatif). Sehingga jika kita menginginkan nilai Recall yang besar, maka nilai FN haruslah kecil.
+
+Untuk mengetahui fitur yang paling mempengaruhi model, bisa dilihat dari _feature importance plot_ dibawah ini.
+
+bisa disimpulkan bahwa fitur yang paling mempengaruhi berdasarkan model adalah `CashbackAmount`. Dari sini kita bisa mengatur strategi terbaik untuk mencegah churn, yaitu dengan mengetahui jumlah cashback terbaik untuk diberikan kepada user.
