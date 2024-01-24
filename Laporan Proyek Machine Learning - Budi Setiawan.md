@@ -84,8 +84,7 @@ Terlihat bahwa ada beberapa fitur yang saling berkorelasi. Seperti fitur `OrderC
 Duplicate data adalah informasi berlebih yang tidak diperlukan. Jika ada, sebaiknya dihapus. Dataset ini tidak memiliki data duplikasi.
 - **Handling missing value**
 Fitur yang memiliki missing value semuanya adalah fitur numerik. Jumlah missing value untuk semua kolom tidak lebih dari 1% dari jumlah data. Melihat jarak antara nilai median dan mean tidak terlalu signifikan, maka akan dilakukan imputasi dengan nilai mean. Data missing value akan ditambahkan missing indicator untuk mengetahui apakah data yang missing merupakan good predictor atau tidak. Proporsi Missing value bisa dilihat pada tabel dibawah
-
-
+![missing](https://github.com/AnnurAfgoni/e-commerce-churn/blob/master/images/missing_value.png)
 - **Handling Outlier**
 Hampir semua fitur numerik memiliki outlier. Outlier dideteksi dengan menggunakan metode IQR. Karena outlier kebanyakan bersumber dari distribusi data yang skew, maka data yang ada outlier akan dilakukan transformasi/normalisasi ketimbang dilakukan trimming (penghapusan).
 - **Handling cardinality dan Rare Labels**
@@ -93,8 +92,11 @@ Cardinality adalah data kategorik yang memiliki terlalu banyak unique value. Sed
 - **Variable Encoding**
 Data kategori dilakukan encoding dengan metode frequency encoder. Hal ini dilakukan karena cocok untuk kasus ini, semakin besar bobot semakin besar pengaruh label tersebut.
 - **Transformasi Variable**
-Transformasi variable bisa berarti scaling/normalisasi. Transformasi yang dicoba dalam notebook adalah `LogTransformation` dan `YeoJohnson`. Transformasi dilakukan hanya pada fitur numerik yang jumlah unique value diatas 10 karena kalau dibawah 10 bisa dianggap data kategori yang sudah di encoding. Untuk fitur numerik dengan unique value dibawah 10 dilakukan scaling dengan `MinMaxScaler`. **Perlu diingat bahwa transformasi ini hanya dilakukan untuk model yang sensitif dengan jarak seperti _KNN_ dan _Logistic Regression_**
-
+Transformasi variable bisa berarti scaling/normalisasi. Transformasi yang dicoba dalam notebook adalah `LogTransformation` dan `YeoJohnson`. Transformasi dilakukan hanya pada fitur numerik yang jumlah unique value diatas 10 karena kalau dibawah 10 bisa dianggap data kategori yang sudah di encoding. Untuk fitur numerik dengan unique value dibawah 10 dilakukan scaling dengan `MinMaxScaler`. **Perlu diingat bahwa transformasi ini hanya dilakukan untuk model yang sensitif dengan jarak seperti _KNN_ dan _Logistic Regression_**. Normalitas data sebelum ditransformasi adalah sebagai berikut
+![initial_normality](https://github.com/AnnurAfgoni/e-commerce-churn/blob/master/images/initial_normality.png)
+Data yang terdistribusi normal akan memiliki plot garis lurus dengan sudut 45 derajat. Setelah ditransformasi menjadi
+![after](https://github.com/AnnurAfgoni/e-commerce-churn/blob/master/images/normality_after_YeoJohnson.png)
+Data menjadi lebih mengikuti garis merah, yang menandakan semakin terdistribusi normal.
 ## Modelling
 
 Model yang diuji untuk dataset ini ada 5 model. Pertama ada model yang sensitif dengan jarak (_KNN_ dan _Logistic Regressien_), kedua ada tree based model (Decision Tree, Random Forest, dan XGBoost Classifier). Pemilihan model dilakukan dengan melakukan training pada setiap model dengan parameter default, hasil _recall_ untuk kedua model tersebut adalah sebagai berikut
@@ -107,7 +109,7 @@ Untuk _tree based model_ hasilnya sebagai berikut.
 
 ![m](https://github.com/AnnurAfgoni/e-commerce-churn/blob/master/images/tree_based_model.png)
 
-Proses training dilakukan dengan metode cross validasi untuk melihat konsistensi hasil dari model. Model dengan nilai Recall paling tinggi akan dijadikan model utama untuk dilakukan Hyperparameter Tuning. Model yang dipilih adalah XGBoost karena memiliki nilai recall paling tinggi diantara model yang lain, yaitu sebesar --. Setelah dilakukan Hyperparameter tuning didapat nilai recall sebesar -- untuk data training dan -- untuk data test. Best parameter untuk xgboost adalah:
+Proses training dilakukan dengan metode cross validasi untuk melihat konsistensi hasil dari model. Model dengan nilai Recall paling tinggi akan dijadikan model utama untuk dilakukan Hyperparameter Tuning. Model yang dipilih adalah XGBoost karena memiliki nilai recall paling tinggi diantara model yang lain, yaitu sebesar 0.80. Setelah dilakukan Hyperparameter tuning didapat nilai recall sebesar 0.82 untuk data training dan 0.90 untuk data test. Best parameter untuk xgboost adalah:
 
 ```sh
 Best Parameters:  {
@@ -122,13 +124,13 @@ Best Parameters:  {
 
 ## Evaluation
 
-Kasus ini adalah contoh dari kasus klasifikasi. Ketika membangun model prediksi dengan dua target, akan ada dua jenis kesalahan ketika kita ingin melakukan evaluasi terhadap hasil prediksi:
+Kasus ini adalah contoh dari kasus klasifikasi. Ketika membangun model prediksi dengan dua target, akan ada dua jenis kesalahan ketika melakukan evaluasi terhadap hasil prediksi:
 
 - Type I Error : Hasil prediksi positif padahal aslinya negatif.
-Konsekuensi untuk error ini adalah kita akan mengklasifikasi pengguna yang sebenarnya churn padahal tidak churn. Hal ini strategi pencegahan churn nantinya akan salah sassaran, yang bisa jadi menimbulkan biaya. 
+Konsekuensi untuk error ini adalah mengklasifikasi pengguna yang sebenarnya churn padahal tidak churn. Hal ini strategi pencegahan churn nantinya akan salah sassaran, yang bisa jadi menimbulkan biaya. 
 - Type II Error : Hasil prediksi negatif padahal aslinya positif.
-Konsekuensi untuk error ini adalah kita akan mengklasifikasi pengguna yang sebenarnya tidak churn padahal churn. Hal ini akan mengakibatkan kita akan kehilangan pengguna sehingga berdampak pada bisnis e-commerce.
+Konsekuensi untuk error ini adalah mengklasifikasi pengguna yang sebenarnya tidak churn padahal churn. Hal ini akan mengakibatkan hilangnya pengguna sehingga berdampak pada bisnis e-commerce.
 
-Mengingat pemasukan terbesar dari E-Commerce adalah transaksi dari user, maka Type II Error lebih penting untuk dicegah. Sehingga metric yang digunakan adalah Recall. Recall merupakan metrics pada metode klasifikasi yang menyatakan seberapa besar persentase kejadian pada kelas positif yang berhasil dideteksi. Dalam kasus ini, penggunaan recall artinya kita ingin memprediksi seakurat mungkin orang-orang yang berpotensi untuk churn dengan meminimalkan False Negatif. 
+Mengingat pemasukan terbesar dari E-Commerce adalah transaksi dari user, maka Type II Error lebih penting untuk dicegah. Sehingga metric yang digunakan adalah Recall. Recall merupakan metrics pada metode klasifikasi yang menyatakan seberapa besar persentase kejadian pada kelas positif yang berhasil dideteksi. Dalam kasus ini, penggunaan recall artinya memprediksi seakurat mungkin orang-orang yang berpotensi untuk churn dengan meminimalkan False Negatif. 
 
 Formula matematis untuk recall adalah: **$$\frac{TP}{TP+FN}$$**. Dari formula matematik tersebut, nilai dari recall sangat dipengaruhi oleh besar kecilnya nilai FN (False Negatif). Sehingga jika kita menginginkan nilai Recall yang besar, maka nilai FN haruslah kecil.
