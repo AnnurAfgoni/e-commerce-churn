@@ -98,11 +98,14 @@ Transformasi variable bisa berarti scaling/normalisasi. Transformasi yang dicoba
 ## Modelling
 
 Model yang diuji untuk dataset ini ada 5 model. Pertama ada model yang sensitif dengan jarak (_KNN_ dan _Logistic Regressien_), kedua ada tree based model (Decision Tree, Random Forest, dan XGBoost Classifier). Pemilihan model dilakukan dengan melakukan training pada setiap model dengan parameter default, hasil _recall_ untuk kedua model tersebut adalah sebagai berikut
-![](https://github.com/AnnurAfgoni/e-commerce-churn/blob/master/images/distance_based_model.png)
+
+![m](https://github.com/AnnurAfgoni/e-commerce-churn/blob/master/images/distance_based_model.png)
+
 Model _Logistic Regression_ dan _KNN_ sensitif terhadap jarak atau skala karena model melakukan perhitungan dengan basis Koordinat Eucledian. Sehingga ketika skala datanya berbeda, model akan bisa dalam melakukan prediksi, dimana nilai dengan bobot yang lebih besar akan lebih mempengaruhi model. Perbedaan perlakuan pada data untuk model yang sensitif terhadap jarak dengan _tree based model_ berada pada transformasi variable. Hal ini dikarenakan _tree based model_ akan mengalami penurunan performa jika dilakukan scaling atau transformasi. 
 
 Untuk _tree based model_ hasilnya sebagai berikut.
-![](https://github.com/AnnurAfgoni/e-commerce-churn/blob/master/images/tree_based_model.png)
+
+![m](https://github.com/AnnurAfgoni/e-commerce-churn/blob/master/images/tree_based_model.png)
 
 Proses training dilakukan dengan metode cross validasi untuk melihat konsistensi hasil dari model. Model dengan nilai Recall paling tinggi akan dijadikan model utama untuk dilakukan Hyperparameter Tuning. Model yang dipilih adalah XGBoost karena memiliki nilai recall paling tinggi diantara model yang lain, yaitu sebesar --. Setelah dilakukan Hyperparameter tuning didapat nilai recall sebesar -- untuk data training dan -- untuk data test. Best parameter untuk xgboost adalah:
 
