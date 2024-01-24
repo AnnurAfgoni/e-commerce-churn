@@ -67,15 +67,15 @@ Kesimpulan yang bisa diperoleh dari histogram diatas adalah:
 - Kebanyakan user akan order kembali tidak lebih dari 20 hari semenjak dia melakukan order sebelumnya.
 
 Jumlah fitur kategori pada dataset ada 5 fitur. Proporsi value untuk setiap fitur kategori bisa dilihat dibawah
-
+![categori_proportion](https://github.com/AnnurAfgoni/e-commerce-churn/blob/master/images/categori_proportion.png)
 Jumlah unique value pada fitur kategori tidak ada yang terlalu banyak. Semuanya masih pada tahap bisa diterima. Garis merah pada plot adalah threshold proporsi untuk _rare label_. _Rare Label_ adalah label yang sangat jarang muncul pada fitur kategori. Threshold yang digunakan adalah 0.05, apabila label itu proporsinya dibawah 0.05 maka akan dikategorikan sebagai _rare label_. Berdasarkan grafik tersebut, disimpulkan bahwa tidak ada fitur yang memiliki _Rare Label_.
 
 ### Multivariate Analysis
 
 Untuk melihat pengaruh dari fitur numerik terhadap target, bisa dilihat pada visualisasi dibawah
-
+![violinplot](https://github.com/AnnurAfgoni/e-commerce-churn/blob/master/images/num_x_churn.png)
 Gambar diatas adalah violinplot. Terlihat bahwa yang perbedaan yang cukup signifikan ada pada fitur `Tenure` dan `Complain`. User yang churn, cenderung waktu tenornya lebih sebentar dibandingkan dengan yang tidak. Pun sama dengan variable complain, proporsi complain yang churn lebih tinggi dibanding dengan yang tidak. ini menandakan bahwa kedua fitur ini adalah _good predictor_. Kesimpulan ini selaras dengan hasil korelasi fitur yang bisa dilihat pada gambar dibawah. 
-
+![corr](https://github.com/AnnurAfgoni/e-commerce-churn/blob/master/images/correlation.png)
 Terlihat bahwa ada beberapa fitur yang saling berkorelasi. Seperti fitur `OrderCount` dengan `CouponUsed`, `OrderCount` dengan `DaySinceLastOrder`. Hal ini perlu dicatat karena akan menjadi rujukan dalam penentuan model. Fitur yang saling berkorelasi akan menimbulkan masalah multikolinearitas pada model LogisticRegression.
 
 ## Data Preparation
