@@ -1,4 +1,4 @@
-# Laporan Proyek Machine Learning - Budi Setiawan
+# E-Commerce Churn Prediction Analysis
 
 ## Project Domain : Ekonomi dan Bisnis
 
