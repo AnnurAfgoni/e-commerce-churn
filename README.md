@@ -59,7 +59,7 @@ Eksploratory Data yang dilakukan pada notebook ini adalah untuk kepentingan mode
 
 Dataset memiliki tipe data numerik dan kategorikal. Untuk fitur bertipe numerik, akan dilakukan plot untuk mencari tau bentuk distribusinya dengan menggunakan histogram. Dataset memiliki 14 fitur numerik dengan bentuk distribusi seperti gambar dibawah.
 
-[![histogram](https://github.com/AnnurAfgoni/e-commerce-churn/blob/master/images/histogram_of_numerical_features.png?raw=true)]
+![histogram](https://github.com/AnnurAfgoni/e-commerce-churn/blob/master/assets/histogram_of_numerical_features.png?raw=true)
 
 Kesimpulan yang bisa diperoleh dari histogram diatas adalah:
 - Kebanyakan fitur numerik adalah data deskrit (countable).
@@ -72,7 +72,7 @@ Kesimpulan yang bisa diperoleh dari histogram diatas adalah:
 
 Jumlah fitur kategori pada dataset ada 5 fitur. Proporsi value untuk setiap fitur kategori bisa dilihat dibawah
 
-[![bar_plot](https://github.com/AnnurAfgoni/e-commerce-churn/blob/master/images/categori_proportion.png?raw=true)]
+![bar_plot](https://github.com/AnnurAfgoni/e-commerce-churn/blob/master/assets/categori_proportion.png?raw=true)
 
 Jumlah unique value pada fitur kategori tidak ada yang terlalu banyak. Semuanya masih pada tahap bisa diterima. Garis merah pada plot adalah threshold proporsi untuk _rare label_. _Rare Label_ adalah label yang sangat jarang muncul pada fitur kategori. Threshold yang digunakan adalah 0.05, apabila label itu proporsinya dibawah 0.05 maka akan dikategorikan sebagai _rare label_. Berdasarkan grafik tersebut, disimpulkan bahwa tidak ada fitur yang memiliki _Rare Label_.
 
@@ -80,11 +80,11 @@ Jumlah unique value pada fitur kategori tidak ada yang terlalu banyak. Semuanya 
 
 Untuk melihat pengaruh dari fitur numerik terhadap target, bisa dilihat pada visualisasi dibawah
 
-[![violin_plot](https://github.com/AnnurAfgoni/e-commerce-churn/blob/master/images/num_x_churn.png?raw=true)]
+![violin_plot](https://github.com/AnnurAfgoni/e-commerce-churn/blob/master/assets/num_x_churn.png?raw=true)
 
 Gambar diatas adalah violinplot. Terlihat bahwa yang perbedaan yang cukup signifikan ada pada fitur `Tenure` dan `Complain`. User yang churn, cenderung waktu tenornya lebih sebentar dibandingkan dengan yang tidak. Pun sama dengan variable complain, proporsi complain yang churn lebih tinggi dibanding dengan yang tidak. ini menandakan bahwa kedua fitur ini adalah _good predictor_. Kesimpulan ini selaras dengan hasil korelasi fitur yang bisa dilihat pada gambar dibawah. 
 
-[![korelasi](https://github.com/AnnurAfgoni/e-commerce-churn/blob/master/images/correlation.png?raw=true)]
+![korelasi](https://github.com/AnnurAfgoni/e-commerce-churn/blob/master/assets/correlation.png?raw=true)
 
 Terlihat bahwa ada beberapa fitur yang saling berkorelasi. Seperti fitur `OrderCount` dengan `CouponUsed`, `OrderCount` dengan `DaySinceLastOrder`. Hal ini perlu dicatat karena akan menjadi rujukan dalam penentuan model. Fitur yang saling berkorelasi akan menimbulkan masalah multikolinearitas pada model LogisticRegression.
 
@@ -114,11 +114,11 @@ Data kategori dilakukan encoding dengan metode frequency encoder. Hal ini dilaku
 - **Transformasi Variable**
 Transformasi variable bisa berarti scaling/normalisasi. Transformasi yang dicoba dalam notebook adalah `LogTransformation` dan `YeoJohnson`. Transformasi dilakukan hanya pada fitur numerik yang jumlah unique value diatas 10 karena kalau dibawah 10 bisa dianggap data kategori yang sudah di encoding. Untuk fitur numerik dengan unique value dibawah 10 dilakukan scaling dengan `MinMaxScaler`. **Perlu diingat bahwa transformasi ini hanya dilakukan untuk model yang sensitif dengan jarak seperti _KNN_ dan _Logistic Regression_**. Normalitas data sebelum ditransformasi adalah sebagai berikut
 
-[![normality_init](https://github.com/AnnurAfgoni/e-commerce-churn/blob/master/images/initial_normality.png?raw=true)]
+[![normality_init](https://github.com/AnnurAfgoni/e-commerce-churn/blob/master/assets/initial_normality.png?raw=true)]
 
 Data yang terdistribusi normal akan memiliki plot garis lurus dengan sudut 45 derajat. Setelah ditransformasi menjadi
 
-[![normality_yeo](https://github.com/AnnurAfgoni/e-commerce-churn/blob/master/images/normality_after_YeoJohnson.png?raw=true)]
+[![normality_yeo](https://github.com/AnnurAfgoni/e-commerce-churn/blob/master/assets/normality_after_YeoJohnson.png?raw=true)]
 
 Data menjadi lebih mengikuti garis merah, yang menandakan semakin terdistribusi normal.
 ## Modelling
@@ -174,6 +174,6 @@ Formula matematis untuk recall adalah: **$$\frac{TP}{TP+FN}$$** Dari formula mat
 
 Untuk mengetahui fitur yang paling mempengaruhi model, bisa dilihat dari _feature importance plot_ dibawah ini.
 
-[![feature_importance](https://github.com/AnnurAfgoni/e-commerce-churn/blob/master/images/feature_importance.png?raw=true)]
+[![feature_importance](https://github.com/AnnurAfgoni/e-commerce-churn/blob/master/assets/feature_importance.png?raw=true)]
 
 bisa disimpulkan bahwa fitur yang paling mempengaruhi berdasarkan model adalah `CashbackAmount`. Dari sini bisa diatur strategi terbaik untuk mencegah churn, yaitu dengan mengetahui jumlah cashback terbaik untuk diberikan kepada user.
